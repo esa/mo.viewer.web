@@ -91,7 +91,7 @@ function processXMLFile(filepath) {
 
 	$.get(filepath, function (d) {
 		mo_parse(d.documentElement)
-	})
+	}, "xml")
 }
 
 function loadMoSpecs() {
