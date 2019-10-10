@@ -201,6 +201,9 @@ function treeElementName(element) {
 }
 
 function format_line_breaks(text) {
+	if (text == null) {
+		return null
+	}
 	return text.replace(/\n/g, "\n<br/>")
 }
 
