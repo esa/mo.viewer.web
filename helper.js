@@ -98,8 +98,8 @@ IN_OR_OUT = {
 	"mal:request": "IN",
 	"mal:progress": "IN",
 	"mal:submit": "IN",
+	"mal:send": "IN",
 
-	"mal:send": "OUT",
 	"mal:update": "OUT",
 	"mal:acknowledgement": "OUT",
 	"mal:response": "OUT",
