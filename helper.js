@@ -114,7 +114,7 @@ OMMITED_NODE_TYPES = ["mal:specification", "mal:capabilitySet", "mal:documentati
 	"mal:item", "mal:type", "mal:extends", "mal:field", "mal:extraInformation",
 	// IP related
 	"mal:invoke", "mal:acknowledgement", "mal:response", "mal:request", "mal:progress", "mal:update", "mal:submit",
-	"mal:publishNotify"
+	"mal:publishNotify", "mal:send"
 	// COM related
 	, "com:object", "com:event"
 	, "com:objectType", "com:sourceObject", "com:relatedObject"
