@@ -8,10 +8,10 @@
 	The files shall be listed in dependency order (i.e. MAL spec comes first).
 */
 var configServiceDefFiles = [
-	"xml/ServiceDefMAL.xml",
-	"xml/ServiceDefCOM.xml",
-	"xml/ServiceDefMC.xml",
-	"xml/ServiceDefCommon.xml",
+	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMAL.xml",
+	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefCOM.xml",
+	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMC.xml",
+	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefCommon.xml",
 ];
 
 var configServiceBookFiles = {
