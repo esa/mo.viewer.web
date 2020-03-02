@@ -95,8 +95,12 @@ function processXMLFile(filepath) {
 }
 
 function loadMoSpecs() {
-	for (var key in configServiceDefFiles) {
-		processXMLFile(configServiceDefFiles[key]);
+	if(document.cookie == null || document.cookie == ""){
+		document.cookie = "master";
+		$("#branchSelect").val(document.cookie);
+	}
+	for (var key in configServiceDefFiles[document.cookie]) {
+		processXMLFile(configServiceDefFiles[document.cookie][key]);
 	}
 }
 
@@ -128,13 +132,24 @@ function onSelectHandler(event, data) {
 	onNodeSelect(data.node)
 }
 
+function onBranchChanged(event){
+	console.log("val", $("#branchSelect").val());
+	document.cookie = $("#branchSelect").val();
+	location.reload();
+}
+
 window.onload = function () {
+	// branch select
+	$("#branchSelect").val(document.cookie);
+	$("#branchSelect").change(onBranchChanged);
+	
+	// div tree
 	div_tree = document.getElementById('div_tree');
 	div_main = document.getElementById('div_main');
 
-	$("#div_tree").on("hover_node.jstree", onHoverHandler)
-	$("#div_tree").on("dehover_node.jstree", onDehoverHandler)
-	$("#div_tree").on("select_node.jstree", onSelectHandler)
+	$("#div_tree").on("hover_node.jstree", onHoverHandler);
+	$("#div_tree").on("dehover_node.jstree", onDehoverHandler);
+	$("#div_tree").on("select_node.jstree", onSelectHandler);
 
 	tree = {}
 	tree.nodePathMap = []
@@ -166,3 +181,5 @@ window.onload = function () {
 $(window).on("popstate", function (e) {
 	selectNodeFromURL();
 })
+
+
