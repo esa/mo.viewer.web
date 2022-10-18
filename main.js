@@ -94,7 +94,8 @@ async function processXMLFile(filepath) {
 }
 
 function loadMoSpecs() {
-	if (document.cookie == null || document.cookie == "") {
+	if (document.cookie == null || document.cookie == ""
+			|| configServiceDefFiles[document.cookie] === undefined ) {
 		document.cookie = configDefaultBranch;
 		$("#branchSelect").val(document.cookie);
 	}
