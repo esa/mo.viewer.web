@@ -32,33 +32,13 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 				//IE is not supported				
 			} else {
 				//if the book is available as a PDF file
-				if (configServiceBookFiles[new_tree_node.text]) {
-					// then create a book entry
-					var pdf = configServiceBookFiles[new_tree_node.text]
-					console.debug('Adding PDF: ' + new_tree_node.text);
-					var pdf_tree_node = {
-						"text": pdf.name,
-						"children": [],
-						"icon": iconPath(pdf.icon),
-						"id": new_tree_node.id + "_" + display_name,
-						"data": {
-							"path": parent_tree_node == null ? display_name : new_tree_node.data.path + "/" + display_name,
-							//creates a fake XML node
-							"xml_node": {
-								tagName: "book",
-								pdfInfo: pdf
-							}
-						}
-					}
-					new_tree_node.children.push(pdf_tree_node)
-				}
+				buildPdfNode(new_tree_node, display_name, parent_tree_node);
 			}
 		} else {
 			parent_tree_node.children.push(new_tree_node)
 		}
 
 		xml_node.tree_node = new_tree_node // link the XML tree node to jsTree node
-		tree.nameMap[name] = new_tree_node
 		tree.nodePathMap[new_tree_node.data.path] = new_tree_node
 
 		parent_tree_node = new_tree_node
@@ -81,6 +61,29 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 
 			mo_parse(child, lvl + 1, parent_tree_node)
 		}
+	}
+}
+
+function buildPdfNode(new_tree_node, display_name, parent_tree_node) {
+	if (configServiceBookFiles[new_tree_node.text]) {
+		// then create a book entry
+		var pdf = configServiceBookFiles[new_tree_node.text];
+		console.debug('Adding PDF: ' + new_tree_node.text);
+		var pdf_tree_node = {
+			"text": pdf.name,
+			"children": [],
+			"icon": iconPath(pdf.icon),
+			"id": new_tree_node.id + "_" + display_name,
+			"data": {
+				"path": parent_tree_node == null ? display_name : new_tree_node.data.path + "/" + display_name,
+				//creates a fake XML node
+				"xml_node": {
+					tagName: "book",
+					pdfInfo: pdf
+				}
+			}
+		};
+		new_tree_node.children.push(pdf_tree_node);
 	}
 }
 
@@ -158,7 +161,6 @@ window.onload = function () {
 
 	tree = {}
 	tree.nodePathMap = []
-	tree.nameMap = {}
 	tree.data = []
 	let promises = loadMoSpecs();
 	Promise.all(promises).then(specLoadedCallback);

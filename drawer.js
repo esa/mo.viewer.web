@@ -75,10 +75,9 @@ function d_mal_composite(node, target_div) {
 	row = document.createElement("tr");
 	row.appendChild(blue_td_with_text("Extends"))
 	if (node.childrenByTag("mal:extends")) {
-		var super_type = node.childrenByTag("mal:extends")[0]// there only
-		// one entry in
-		// extends
-		row.appendChild(td_with_text(str_mal_node_type(super_type), 3))
+		/* Only one node in extends */
+		var superType = node.childrenByTag("mal:extends")[0]
+		row.appendChild(td_with_text(str_mal_node_type(superType), 3))
 	} else {
 		row.appendChild(td_with_text("MAL:Composite", 3))
 	}
@@ -96,29 +95,55 @@ function d_mal_composite(node, target_div) {
 		row.appendChild(blue_td_with_text("Abstract", 4))
 		tblBody.appendChild(row)
 	}
-
-	// fields
-	if (node.childrenByTag("mal:field")) {
-		var header_row = tableRow(["Field", "Type", "Nullable", "Comment"]);
-		header_row.setAttribute("class", "blue_bg");
-		tblBody.appendChild(header_row)
-
-		node.childrenByTag("mal:field").map(
-			function (f) {
-				row = document.createElement("tr");
-				row.appendChild(td_with_text(f.getAttribute("name")))
-				row.appendChild(td_with_text(str_mal_node_type(f)))
-				row.appendChild(td_with_text(f.getAttribute("canBeNull") == "true"
-					|| f.getAttribute("canBeNull") == null ? "Yes" : "No"))
-				var tdl = td_with_text(f.getAttribute("comment"));
-				tdl.style.textAlign = "left";
-				row.appendChild(tdl)
-				tblBody.appendChild(row)
-			})
-	}
+	buildFieldsTable(node, tblBody);
 
 	tbl.appendChild(tblBody);
 	target_div.appendChild(tbl);
+}
+
+/**
+ *
+ * @param {Node} node XML node
+ * @param {Element} tblBody table body element to insert rows in
+ * @param {boolean} inherited if the fields are inherited
+ * @param {boolean} headerAdded if a header was already added to the table
+ *
+ * @returns True if any fields were added
+ */
+function buildFieldsTable(node, tblBody, inherited = false, headerAdded = false) {
+	if (node.childrenByTag("mal:extends")) {
+		let superType = node.childrenByTag("mal:extends")[0];
+		let { type_str, path_str } = decorateTypeNameAndPath($(superType).children()[0], undefined, "name");
+		let parentNode = tree.nodePathMap[path_str].data.xml_node;
+		headerAdded = buildFieldsTable(parentNode, tblBody, true, headerAdded);
+	}
+	// fields
+	if (node.childrenByTag("mal:field")) {
+		if (!headerAdded)
+		{
+			let header_row = tableRow(["Field", "Type", "Nullable", "Comment"]);
+			header_row.setAttribute("class", "blue_bg");
+			tblBody.appendChild(header_row);
+		}
+
+		node.childrenByTag("mal:field").map(
+			function (f) {
+				let row = document.createElement("tr");
+				row.appendChild(td_with_text(f.getAttribute("name")));
+				row.appendChild(td_with_text(str_mal_node_type(f)));
+				row.appendChild(td_with_text(f.getAttribute("canBeNull") == "true"
+					|| f.getAttribute("canBeNull") == null ? "Yes" : "No"));
+				let tdl = td_with_text(f.getAttribute("comment"));
+				tdl.style.textAlign = "left";
+				row.appendChild(tdl);
+				if(inherited) {
+					row.style.backgroundColor = "#d0d0d0";
+				}
+				tblBody.appendChild(row);
+			});
+		return true;
+	}
+	return false;
 }
 
 function d_mal_ip(node, target_div) {

@@ -242,6 +242,10 @@ function str_mal_node_type(node, path_prefix) {
 	return str_mal_type($(node).children()[0], path_prefix)
 }
 
+function mal_node_ref_to_node(node, path_prefix) {
+	return str_mal_type($(node).children()[0], path_prefix)
+}
+
 function str_mal_type(type, path_prefix) {
 	return str_type(type, path_prefix, "name")
 }
@@ -284,38 +288,50 @@ function create_type_annotation(type_str, path_str, is_list) {
 	}
 }
 
+/**
+ *
+ * @param {Object} type
+ * @param {String} path_prefix
+ * @param {String} id_type
+ * @returns An annotated <a> tag that displays a miniature type description on hover
+ */
 function str_type(type, path_prefix, id_type) {
-	path_prefix = (typeof path_prefix == 'undefined') ? "Data/" : path_prefix
-	var type_str = ""
-	var path_str = ""
+	let { type_str, path_str } = decorateTypeNameAndPath(type, path_prefix, id_type);
+	return create_type_annotation(type_str, path_str, type.getAttribute("list"))
+}
+
+function decorateTypeNameAndPath(type, path_prefix, id_type) {
+	path_prefix = (typeof path_prefix == 'undefined') ? "Data/" : path_prefix;
+	var type_str = "";
+	var path_str = "";
 
 	var appendIf = function (a) {
 		if (type.getAttribute(a)) {
-			type_str += type.getAttribute(a) + ":"
-			path_str += type.getAttribute(a) + "/"
+			type_str += type.getAttribute(a) + ":";
+			path_str += type.getAttribute(a) + "/";
 		}
-	}
+	};
 
-	appendIf("area")
-	appendIf("service")
+	appendIf("area");
+	appendIf("service");
 
-	type_str += type.getAttribute(id_type)
-	path_str += path_prefix + type.getAttribute(id_type)
+	type_str += type.getAttribute(id_type);
+	path_str += path_prefix + type.getAttribute(id_type);
 
 	// remove current area from type
 	if (type.area) {
-		var area_prefix = type.area + ":"
+		var area_prefix = type.area + ":";
 		if (type_str.indexOf(area_prefix) == 0)
-			type_str = type_str.slice(type_str.indexOf(area_prefix) + area_prefix.length)
+			type_str = type_str.slice(type_str.indexOf(area_prefix) + area_prefix.length);
 	}
 
 	// remove current service from type
 	if (type.service) {
-		var service_prefix = type.service + ":"
+		var service_prefix = type.service + ":";
 		if (type_str.indexOf(service_prefix) == 0)
-			type_str = type_str.slice(type_str.indexOf(service_prefix) + service_prefix.length)
+			type_str = type_str.slice(type_str.indexOf(service_prefix) + service_prefix.length);
 	}
-	return create_type_annotation(type_str, path_str, type.getAttribute("list"))
+	return { type_str, path_str };
 }
 
 function str_mal_field(node) {
