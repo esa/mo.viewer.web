@@ -28,13 +28,11 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 			console.debug('Adding Area: ' + new_tree_node.text);
 			tree.data.push(new_tree_node)
 
-			if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1))
-			{
+			if (navigator.appName == 'Microsoft Internet Explorer' || !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1)) {
 				//IE is not supported				
-			}else
-			{
+			} else {
 				//if the book is available as a PDF file
-				if(configServiceBookFiles[new_tree_node.text]){
+				if (configServiceBookFiles[new_tree_node.text]) {
 					// then create a book entry
 					var pdf = configServiceBookFiles[new_tree_node.text]
 					console.debug('Adding PDF: ' + new_tree_node.text);
@@ -47,7 +45,7 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 							"path": parent_tree_node == null ? display_name : new_tree_node.data.path + "/" + display_name,
 							//creates a fake XML node
 							"xml_node": {
-								tagName:"book",
+								tagName: "book",
 								pdfInfo: pdf
 							}
 						}
@@ -96,8 +94,8 @@ async function processXMLFile(filepath) {
 }
 
 function loadMoSpecs() {
-	if(document.cookie == null || document.cookie == ""){
-		document.cookie = "master";
+	if (document.cookie == null || document.cookie == "") {
+		document.cookie = configDefaultBranch;
 		$("#branchSelect").val(document.cookie);
 	}
 	let promises = []
@@ -135,7 +133,7 @@ function onSelectHandler(event, data) {
 	onNodeSelect(data.node)
 }
 
-function onBranchChanged(event){
+function onBranchChanged(event) {
 	console.log("val", $("#branchSelect").val());
 	document.cookie = $("#branchSelect").val();
 	location.reload();
@@ -148,7 +146,7 @@ window.onload = function () {
 	// branch select
 	$("#branchSelect").val(document.cookie);
 	$("#branchSelect").change(onBranchChanged);
-	
+
 	// div tree
 	div_tree = document.getElementById('div_tree');
 	div_main = document.getElementById('div_main');
@@ -165,7 +163,7 @@ window.onload = function () {
 	Promise.all(promises).then(specLoadedCallback);
 }
 
-function specLoadedCallback(){
+function specLoadedCallback() {
 	$("#div_tree").jstree({
 		"core": {
 			"multiple": false, // No multiselection

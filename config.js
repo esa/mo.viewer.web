@@ -4,35 +4,50 @@
 
 var configServiceDefFiles = {}
 
+var configDefaultBranch = "release_8"
 /**
 	The array below contains the list of loaded XML files.
 	It should be configured appropriately in each MO Viewer instance.
 	The files shall be listed in dependency order (i.e. MAL spec comes first).
 */
-configServiceDefFiles.master = [
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/master/MO_XML/src/main/resources/xml/ServiceDefMAL.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/master/MO_XML/src/main/resources/xml/ServiceDefCOM.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/master/MO_XML/src/main/resources/xml/ServiceDefMC.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/master/MO_XML/src/main/resources/xml/ServiceDefCommon.xml",
+/* Release 8 (the latest) */
+configServiceDefFiles.release_8 = [
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area001-v001-MAL.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area002-v001-COM.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area004-v001-Monitor-and-Control.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area003-v001-Common.xml",
 ];
 
-configServiceDefFiles.development = [
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMAL.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefCOM.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMC.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefCommon.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefFMS.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMDP.xml",
+/* Prototypes (in the master branch) */
+configServiceDefFiles.prototypes = [
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v001-Monitor-and-Control.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area003-v001-Common.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area020-v001-File-Management.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area051-v001-Mission-Data-Product.xml",
 ];
 
+/* NMF Development branch */
 configServiceDefFiles.nmf_dev = [
 	"https://raw.githubusercontent.com/esa/nanosat-mo-framework/dev/core/mo-services-xml/src/main/resources/xml/ServiceDefMAL.xml",
 	"https://raw.githubusercontent.com/esa/nanosat-mo-framework/dev/core/mo-services-xml/src/main/resources/xml/ServiceDefCOM-nmf.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefCommon.xml",
-	"https://raw.githubusercontent.com/esa/CCSDS_MO_XML/development/MO_XML/src/main/resources/xml/ServiceDefMC.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area004-v001-Monitor-and-Control.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area003-v001-Common.xml",
 	"https://raw.githubusercontent.com/esa/nanosat-mo-framework/dev/core/mo-services-xml/src/main/resources/xml/ServiceDefPLATFORM.xml",
 	"https://raw.githubusercontent.com/esa/nanosat-mo-framework/dev/core/mo-services-xml/src/main/resources/xml/ServiceDefSM.xml",
 	"https://raw.githubusercontent.com/esa/nanosat-mo-framework/dev/core/mo-services-xml/src/main/resources/xml/ServiceDefMP-nmf.xml"
+];
+
+/* MPSS Draft */
+configServiceDefFiles.mpss_draft = [
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v001-Monitor-and-Control.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area003-v001-Common.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area020-v001-File-Management.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area042-v001-Mission-Planning-and-Scheduling.xml",
+	"https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area051-v001-Mission-Data-Product.xml",
 ];
 
 var configServiceBookFiles = {
