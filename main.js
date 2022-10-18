@@ -139,6 +139,9 @@ function onBranchChanged(event){
 }
 
 window.onload = function () {
+	for (const branchName in configServiceDefFiles) {
+		$("#branchSelect").append(new Option(branchName, branchName));
+	}
 	// branch select
 	$("#branchSelect").val(document.cookie);
 	$("#branchSelect").change(onBranchChanged);
