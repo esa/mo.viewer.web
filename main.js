@@ -25,6 +25,7 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 
 		//if it's a root element, i.e. a book
 		if (parent_tree_node == null) {
+			console.debug('Adding Area: ' + new_tree_node.text);
 			tree.data.push(new_tree_node)
 
 			if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1))
@@ -36,7 +37,7 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 				if(configServiceBookFiles[new_tree_node.text]){
 					// then create a book entry
 					var pdf = configServiceBookFiles[new_tree_node.text]
-					console.info(new_tree_node.text);
+					console.debug('Adding PDF: ' + new_tree_node.text);
 					var pdf_tree_node = {
 						"text": pdf.name,
 						"children": [],
@@ -85,11 +86,11 @@ function mo_parse(xml_node, lvl, parent_tree_node) {
 	}
 }
 
-function processXMLFile(filepath) {
+async function processXMLFile(filepath) {
 	// console.info("loading " + filepath);
-	jQuery.ajaxSetup({ async: false });
+	jQuery.ajaxSetup({ async: true });
 
-	$.get(filepath, function (d) {
+	return $.get(filepath, function (d) {
 		mo_parse(d.documentElement)
 	}, "xml")
 }
@@ -99,9 +100,11 @@ function loadMoSpecs() {
 		document.cookie = "master";
 		$("#branchSelect").val(document.cookie);
 	}
+	let promises = []
 	for (var key in configServiceDefFiles[document.cookie]) {
-		processXMLFile(configServiceDefFiles[document.cookie][key]);
+		promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
 	}
+	return promises
 }
 
 function selectNodeFromURL() {
@@ -158,8 +161,11 @@ window.onload = function () {
 	tree.nodePathMap = []
 	tree.nameMap = {}
 	tree.data = []
-	loadMoSpecs();
+	let promises = loadMoSpecs();
+	Promise.all(promises).then(specLoadedCallback);
+}
 
+function specLoadedCallback(){
 	$("#div_tree").jstree({
 		"core": {
 			"multiple": false, // No multiselection
