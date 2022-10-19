@@ -1,195 +1,240 @@
-// Recursively generate a jsTree node structure from a given XML node
-function mo_parse(xml_node, lvl, parent_tree_node) {
-	lvl = lvl || 0
-	parent_tree_node = parent_tree_node || null
-	// String.prototype.repeat() is not used below for IE compatibility
-	var prfx = "";
-	while (lvl-- > 0) {
-		prfx += ". "
-	}
+/**
+ * Recursively generate a tree node structure from a given XML node
+ * @param {*} xmlNode
+ * @param {*} treeLevel
+ * @param {*} parentTreeNode
+ */
+function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
+  // String.prototype.repeat() is not used below for IE compatibility
 
-	// skip ommited node types
-	// Array.prototype.includes() is not used below for IE compatibility
-	if (OMMITED_NODE_TYPES.indexOf(xml_node.tagName) === -1) {
-		var display_name = treeElementName(xml_node)
-		var new_tree_node = {
-			"text": display_name,
-			"children": [],
-			"icon": iconPath(xml_node.tagName),
-			"id": parent_tree_node == null ? display_name : (parent_tree_node.id + "_" + display_name),
-			"data": {
-				"path": parent_tree_node == null ? display_name : (parent_tree_node.data.path + "/" + display_name),
-				"xml_node": xml_node
-			}
-		}
+  // skip ommited node types
+  // Array.prototype.includes() is not used below for IE compatibility
+  if (OMMITED_NODE_TYPES.indexOf(xmlNode.tagName) === -1) {
+    const nodeDisplayName = treeElementName(xmlNode);
+    const newTreeNode = {
+      'text': nodeDisplayName,
+      'children': [],
+      'icon': iconPath(xmlNode.tagName),
+      'id': parentTreeNode == null ? nodeDisplayName : (parentTreeNode.id + '_' + nodeDisplayName),
+      'data': {
+        'path': parentTreeNode == null ? nodeDisplayName : (parentTreeNode.data.path + '/' + nodeDisplayName),
+        'xml_node': xmlNode,
+      },
+    };
 
-		//if it's a root element, i.e. a book
-		if (parent_tree_node == null) {
-			console.debug('Adding Area: ' + new_tree_node.text);
-			tree.data.push(new_tree_node)
+    // if it's a root element, i.e. a book
+    if (parentTreeNode == null) {
+      console.debug('Adding Area: ' + newTreeNode.text);
+      tree.data.push(newTreeNode);
 
-			if (navigator.appName == 'Microsoft Internet Explorer' || !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1)) {
-				//IE is not supported				
-			} else {
-				//if the book is available as a PDF file
-				buildPdfNode(new_tree_node, display_name, parent_tree_node);
-			}
-		} else {
-			parent_tree_node.children.push(new_tree_node)
-		}
+      if (navigator.appName == 'Microsoft Internet Explorer' || !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== 'undefined' && $.browser.msie == 1)) {
+        // IE is not supported
+      } else {
+        // if the book is available as a PDF file
+        buildPdfNode(newTreeNode, nodeDisplayName, parentTreeNode);
+      }
+    } else {
+      parentTreeNode.children.push(newTreeNode);
+    }
 
-		xml_node.tree_node = new_tree_node // link the XML tree node to jsTree node
-		tree.nodePathMap[new_tree_node.data.path] = new_tree_node
+    xmlNode.tree_node = newTreeNode; // link the XML tree node to jsTree node
+    tree.nodePathMap[newTreeNode.data.path] = newTreeNode;
 
-		parent_tree_node = new_tree_node
-	}
+    parentTreeNode = newTreeNode;
+  }
 
-	// Cannot iterate over Element.children for IE compatibility
-	for (var i = 0; i < xml_node.childNodes.length; ++i) {
-		var child = xml_node.childNodes[i]
-		if (child instanceof Element) {
-			// Populate Area and Service members and propagate them recursively
-			if (child.isTag("mal:area")) {
-				child.area = child.getAttribute("name")
-			}
-			child.area = child.area || child.parentNode.area
+  // Cannot iterate over Element.children for IE compatibility
+  for (let i = 0; i < xmlNode.childNodes.length; ++i) {
+    const child = xmlNode.childNodes[i];
+    if (child instanceof Element) {
+      // Populate Area and Service members and propagate them recursively
+      if (child.isTag('mal:area')) {
+        child.area = child.getAttribute('name');
+      }
+      child.area = child.area || child.parentNode.area;
 
-			if (child.isTag("mal:service")) {
-				child.service = child.getAttribute("name")
-			}
-			child.service = child.service || child.parentNode.service
+      if (child.isTag('mal:service')) {
+        child.service = child.getAttribute('name');
+      }
+      child.service = child.service || child.parentNode.service;
 
-			mo_parse(child, lvl + 1, parent_tree_node)
-		}
-	}
+      parseMoNode(child, treeLevel + 1, parentTreeNode);
+    }
+  }
 }
 
-function buildPdfNode(new_tree_node, display_name, parent_tree_node) {
-	if (configServiceBookFiles[new_tree_node.text]) {
-		// then create a book entry
-		var pdf = configServiceBookFiles[new_tree_node.text];
-		console.debug('Adding PDF: ' + new_tree_node.text);
-		var pdf_tree_node = {
-			"text": pdf.name,
-			"children": [],
-			"icon": iconPath(pdf.icon),
-			"id": new_tree_node.id + "_" + display_name,
-			"data": {
-				"path": parent_tree_node == null ? display_name : new_tree_node.data.path + "/" + display_name,
-				//creates a fake XML node
-				"xml_node": {
-					tagName: "book",
-					pdfInfo: pdf
-				}
-			}
-		};
-		new_tree_node.children.push(pdf_tree_node);
-	}
+/**
+ *
+ * @param {*} newTreeNode
+ * @param {*} nodeDisplayName
+ * @param {*} parentTreeNode
+ */
+function buildPdfNode(newTreeNode, nodeDisplayName, parentTreeNode) {
+  if (configServiceBookFiles[newTreeNode.text]) {
+    // then create a book entry
+    const pdf = configServiceBookFiles[newTreeNode.text];
+    console.debug('Adding PDF: ' + newTreeNode.text);
+    const pdfTreeNode = {
+      'text': pdf.name,
+      'children': [],
+      'icon': iconPath(pdf.icon),
+      'id': newTreeNode.id + '_' + nodeDisplayName,
+      'data': {
+        'path': parentTreeNode == null ? nodeDisplayName : newTreeNode.data.path + '/' + nodeDisplayName,
+        // creates a fake XML node
+        'xml_node': {
+          tagName: 'book',
+          pdfInfo: pdf,
+        },
+      },
+    };
+    newTreeNode.children.push(pdfTreeNode);
+  }
 }
 
+/**
+ *
+ * @param {*} filepath
+ * @return {Promise} Promise allowing to track the retrieval status
+ */
 async function processXMLFile(filepath) {
-	// console.info("loading " + filepath);
-	jQuery.ajaxSetup({ async: true });
+  // console.info("loading " + filepath);
+  jQuery.ajaxSetup({async: true});
 
-	return $.get(filepath, function (d) {
-		mo_parse(d.documentElement)
-	}, "xml")
+  return $.get(filepath, function(d) {
+    parseMoNode(d.documentElement);
+  }, 'xml');
 }
 
+/**
+ *
+ * @return {Array<Promise>} Array of promises allowing to track the laod status
+ */
 function loadMoSpecs() {
-	if (document.cookie == null || document.cookie == ""
-			|| configServiceDefFiles[document.cookie] === undefined ) {
-		document.cookie = configDefaultBranch;
-		$("#branchSelect").val(document.cookie);
-	}
-	let promises = []
-	for (var key in configServiceDefFiles[document.cookie]) {
-		promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
-	}
-	return promises
+  if (document.cookie == null || document.cookie == '' ||
+    configServiceDefFiles[document.cookie] === undefined) {
+    document.cookie = configDefaultBranch;
+    $('#branchSelect').val(document.cookie);
+  }
+  const promises = [];
+  for (const key in configServiceDefFiles[document.cookie]) {
+    if (Array.isArray(key)) {
+      promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
+    }
+  }
+  return promises;
 }
 
+/**
+ * Selects the node provided in the URL
+ */
 function selectNodeFromURL() {
-	var nodePath = getUrlParameter("u");
-	if (typeof nodePath !== "undefined") {
-		selectNodeFromPath(nodePath);
-	}
+  const nodePath = getUrlParameter('u');
+  if (typeof nodePath !== 'undefined') {
+    selectNodeFromPath(nodePath);
+  }
 }
 
-function selectNodeFromPath(p_node_path) {
-	var tmp_node = tree.nodePathMap[p_node_path];
-	if (tmp_node != null) {
-		$("#div_tree").jstree("deselect_all");
-		$("#div_tree").jstree("select_node", tmp_node.id);
-		$("#div_tree").jstree("open_node", tmp_node.id);
-	}
+/**
+ * Selects the node provided in the URL
+ * @param {string} nodePathFromTheUrl
+ */
+function selectNodeFromPath(nodePathFromTheUrl) {
+  const tmpNode = tree.nodePathMap[nodePathFromTheUrl];
+  if (tmpNode != null) {
+    $('#div_tree').jstree('deselect_all');
+    $('#div_tree').jstree('select_node', tmpNode.id);
+    $('#div_tree').jstree('open_node', tmpNode.id);
+  }
 }
 
-function onHoverHandler(event, data) {
-	hoverInToMiniview(data.node.data.xml_node, $("#" + data.node.a_attr.id))
+/**
+ * Hover handler for tree nodes
+ * @param {*} event
+ * @param {*} data
+ */
+function treeNodeOnHoverHandler(event, data) {
+  hoverInToMiniview(data.node.data.xml_node, $('#' + data.node.a_attr.id));
 }
 
+/**
+ * Un-hover handler for tree nodes
+ * @param {*} event
+ * @param {*} data
+ */
 function onDehoverHandler(event, data) {
-	hoverOutOfMiniview(data.node.data.xml_node, $("#" + data.node.a_attr.id))
+  hoverOutOfMiniview(data.node.data.xml_node, $('#' + data.node.a_attr.id));
 }
 
+/**
+ * Select handler for tree nodes
+ * @param {*} event
+ * @param {*} data
+ */
 function onSelectHandler(event, data) {
-	onNodeSelect(data.node)
+  onNodeSelect(data.node);
 }
 
+/**
+ * Branch change handler
+ * @param {*} event
+ */
 function onBranchChanged(event) {
-	console.log("val", $("#branchSelect").val());
-	document.cookie = $("#branchSelect").val();
-	location.reload();
+  console.log('val', $('#branchSelect').val());
+  document.cookie = $('#branchSelect').val();
+  location.reload();
 }
 
-window.onload = function () {
-	for (const branchName in configServiceDefFiles) {
-		$("#branchSelect").append(new Option(branchName, branchName));
-	}
-	// branch select
-	$("#branchSelect").val(document.cookie);
-	$("#branchSelect").change(onBranchChanged);
+window.onload = function() {
+  for (const branchName in configServiceDefFiles) {
+    if (Array.isArray(key)) {
+      $('#branchSelect').append(new Option(branchName, branchName));
+    }
+  }
+  // branch select
+  $('#branchSelect').val(document.cookie);
+  $('#branchSelect').change(onBranchChanged);
 
-	// div tree
-	div_tree = document.getElementById('div_tree');
-	div_main = document.getElementById('div_main');
+  divMain = document.getElementById('div_main');
 
-	$("#div_tree").on("hover_node.jstree", onHoverHandler);
-	$("#div_tree").on("dehover_node.jstree", onDehoverHandler);
-	$("#div_tree").on("select_node.jstree", onSelectHandler);
+  $('#div_tree').on('hover_node.jstree', treeNodeOnHoverHandler);
+  $('#div_tree').on('dehover_node.jstree', onDehoverHandler);
+  $('#div_tree').on('select_node.jstree', onSelectHandler);
 
-	tree = {}
-	tree.nodePathMap = []
-	tree.data = []
-	let promises = loadMoSpecs();
-	Promise.all(promises).then(specLoadedCallback);
-}
+  tree = {};
+  tree.nodePathMap = [];
+  tree.data = [];
+  const promises = loadMoSpecs();
+  Promise.all(promises).then(specLoadedCallback);
+};
 
+/**
+ * Callback for when all the specs are loaded
+ */
 function specLoadedCallback() {
-	$("#div_tree").jstree({
-		"core": {
-			"multiple": false, // No multiselection
-			"animation": false, // No animation
-			"data": tree.data
-		},
-		"search": {
-			"fuzzy": false,
-			"show_only_matches": true,
-			"show_only_matches_children": true
-		},
-		"plugins": ["search"]
-	});
+  $('#div_tree').jstree({
+    'core': {
+      'multiple': false, // No multiselection
+      'animation': false, // No animation
+      'data': tree.data,
+    },
+    'search': {
+      'fuzzy': false,
+      'show_only_matches': true,
+      'show_only_matches_children': true,
+    },
+    'plugins': ['search'],
+  });
 
-	$("#searchbox").on('input', function (e) {
-		$("#div_tree").jstree(true).search($("#searchbox").val());
-	});
+  $('#searchbox').on('input', function(e) {
+    $('#div_tree').jstree(true).search($('#searchbox').val());
+  });
 
-	selectNodeFromURL();
+  selectNodeFromURL();
 }
 
-$(window).on("popstate", function (e) {
-	selectNodeFromURL();
-})
+$(window).on('popstate', function(e) {
+  selectNodeFromURL();
+});
 
 

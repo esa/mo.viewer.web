@@ -1,5 +1,5 @@
 function d_mal_fundamental(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
 
@@ -32,7 +32,7 @@ function d_mal_fundamental(node, target_div) {
 }
 
 function d_mal_attribute(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
 
@@ -61,7 +61,7 @@ function d_mal_attribute(node, target_div) {
 }
 
 function d_mal_composite(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
 
@@ -119,8 +119,7 @@ function buildFieldsTable(node, tblBody, inherited = false, headerAdded = false)
 	}
 	// fields
 	if (node.childrenByTag("mal:field")) {
-		if (!headerAdded)
-		{
+		if (!headerAdded) {
 			let header_row = tableRow(["Field", "Type", "Nullable", "Comment"]);
 			header_row.setAttribute("class", "blue_bg");
 			tblBody.appendChild(header_row);
@@ -136,7 +135,7 @@ function buildFieldsTable(node, tblBody, inherited = false, headerAdded = false)
 				let tdl = td_with_text(f.getAttribute("comment"));
 				tdl.style.textAlign = "left";
 				row.appendChild(tdl);
-				if(inherited) {
+				if (inherited) {
 					row.style.backgroundColor = "#d0d0d0";
 				}
 				tblBody.appendChild(row);
@@ -147,7 +146,7 @@ function buildFieldsTable(node, tblBody, inherited = false, headerAdded = false)
 }
 
 function d_mal_ip(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
 
@@ -190,7 +189,7 @@ function d_mal_ip_header(tblBody, id, ip) {
 }
 
 function tr_mal_message(node, target_div, unique_sufix) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	unique_sufix = unique_sufix || gen_suffix()
 
 	var row = document.createElement("tr");
@@ -253,7 +252,7 @@ function tr_mal_message(node, target_div, unique_sufix) {
 }
 
 function d_mal_service(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var area = node.parentNode
 
 	var tbl = document.createElement("table");
@@ -357,7 +356,7 @@ function d_mal_service(node, target_div) {
 }
 
 function d_mal_enum(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
 	var row
@@ -400,7 +399,7 @@ function d_com_events(node, target_div, object_tag) {
 
 function d_com_objects(node, target_div, object_tag) {
 	object_tag = object_tag || "com:object"
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 
 	var tbl = document.createElement("table");
 	var tblBody = document.createElement("tbody");
@@ -456,13 +455,13 @@ function d_com_objects(node, target_div, object_tag) {
 }
 
 function default_drawer(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	if (node.getAttributeNames().length > 0)
 		draw_table(node, target_div)
 }
 
 function draw_table(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var keys = node.getAttributeNames()
 	var comment = node.getAttribute("comment")
 
@@ -497,7 +496,7 @@ function draw_table(node, target_div) {
 }
 
 function draw_errors(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	// check if errors entry exists, if not, then exit
 	if (node.childrenByTag("mal:errors", 0) == null) {
 		return
@@ -532,7 +531,7 @@ function draw_errors(node, target_div) {
 }
 
 function draw_documentation(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	// ------------------ Documents ---------------------
 	node.eachTag("mal:documentation", function (doc) {
 		var h2 = document.createElement("h2");
@@ -543,7 +542,7 @@ function draw_documentation(node, target_div) {
 }
 
 function tr_errorRef(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var row = document.createElement("tr");
 
 	// ------------- error type
@@ -615,7 +614,7 @@ function td_table_comment(full_comment, unique_sufix) {
 }
 
 function draw_comments(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 	var comment = node.getAttribute("comment")
 	if (typeof comment != 'undefined' && comment != null && comment != "") {
 		var h2 = document.createElement("h2");
@@ -637,11 +636,11 @@ function draw_comments(node, target_div) {
 }
 
 function d_pdf(node, target_div) {
-	target_div = target_div || div_main
+	target_div = target_div || divMain
 
-//	target_div.innerHTML = node.tagName
+	//	target_div.innerHTML = node.tagName
 	var pdframe = document.createElement("iframe");
-	pdframe.setAttribute("src",node.pdfInfo.pdfFilePath);
+	pdframe.setAttribute("src", node.pdfInfo.pdfFilePath);
 	target_div.appendChild(pdframe);
 }
 

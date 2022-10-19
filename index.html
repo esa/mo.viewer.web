@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="moviewer.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="inc/jstree_themes/default/style.css"
+    />
 
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="moviewer.css">
-	<link rel="stylesheet" type="text/css" href="inc/jstree_themes/default/style.css">
+    <script type="text/javascript" src="inc/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="inc/jstree.min.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="helper.js"></script>
+    <script type="text/javascript" src="drawer.js"></script>
+    <script type="text/javascript" src="separator.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+  </head>
 
-	<script type="text/javascript" src="inc/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="inc/jstree.min.js"></script>
-	<script type="text/javascript" src="config.js"></script>
-	<script type="text/javascript" src="helper.js"></script>
-	<script type="text/javascript" src="drawer.js"></script>
-	<script type="text/javascript" src="separator.js"></script>
-	<script type="text/javascript" src="main.js"></script>
-</head>
+  <body>
+    <!-- Top bar -->
+    <div class="horizontalSpace"></div>
+    <div id="top_bar">
+      Branch:
+      <!-- Populated dynamically -->
+      <select name="branchSelect" id="branchSelect"></select>
+    </div>
 
-<body>
-	
-	<!-- Top bar -->
-	<div class="horizontalSpace"></div>
-	<div id="top_bar">
-		Branch: 
-		<!-- Populated dynamically -->
-		<select name="branchSelect" id="branchSelect"></select>
-	</div>
+    <!-- Main -->
+    <div id="mainContainer">
+      <div id="div_left_panel">
+        <div id="div_search_parent">
+          <input type="search" id="searchbox" placeholder="Search..." />
+        </div>
+        <div id="div_tree_parent">
+          <div id="div_tree"></div>
+        </div>
+      </div>
+      <div class="verticalSeparator" id="v_separator"></div>
+      <div id="div_main"></div>
+      <div id="rightAnchor"></div>
+      <div id="notification_bar" class="notificationBar"></div>
 
-	<!-- Main -->
-	<div id="mainContainer">
-		<div id="div_left_panel">
-			<div id="div_search_parent">
-				<input type="search" id="searchbox" placeholder="Search..." />
-			</div>
-			<div id="div_tree_parent">
-				<div id="div_tree"></div>
-			</div>
-		</div>
-		<div class="verticalSeparator" id="v_separator"></div>
-		<div id="div_main"></div>
-		<div id="rightAnchor"></div>
-		<div id="notification_bar" class="notificationBar"></div>
-		
-		<div class="copyright">
-			Thanks to <a href="http://www.famfamfam.com/lab/icons/silk/">Fam Fam Fam Silk Icons</a> for the awesome icons.
-		</div>
-	</div>	
-	
-	<div id="div_miniview" class="miniview"></div>
-	
-</body>
+      <div class="copyright">
+        Thanks to
+        <a href="http://www.famfamfam.com/lab/icons/silk/"
+          >Fam Fam Fam Silk Icons</a
+        >
+        for the awesome icons.
+      </div>
+    </div>
+
+    <div id="div_miniview" class="miniview"></div>
+  </body>
 </html>
