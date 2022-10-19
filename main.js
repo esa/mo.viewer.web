@@ -187,7 +187,7 @@ function onBranchChanged(event) {
 
 window.onload = function() {
   for (const branchName in configServiceDefFiles) {
-    if (Array.isArray(key)) {
+    if (Array.isArray(branchName)) {
       $('#branchSelect').append(new Option(branchName, branchName));
     }
   }
