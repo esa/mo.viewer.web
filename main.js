@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /**
  * Recursively generate a tree node structure from a given XML node
  * @param {*} xmlNode
@@ -118,9 +119,7 @@ function loadMoSpecs() {
   }
   const promises = [];
   for (const key in configServiceDefFiles[document.cookie]) {
-    if (Array.isArray(key)) {
-      promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
-    }
+    promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
   }
   return promises;
 }
@@ -187,9 +186,7 @@ function onBranchChanged(event) {
 
 window.onload = function() {
   for (const branchName in configServiceDefFiles) {
-    if (Array.isArray(branchName)) {
-      $('#branchSelect').append(new Option(branchName, branchName));
-    }
+    $('#branchSelect').append(new Option(branchName, branchName));
   }
   // branch select
   $('#branchSelect').val(document.cookie);
