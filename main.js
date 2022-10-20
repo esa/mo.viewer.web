@@ -6,11 +6,8 @@
  * @param {*} parentTreeNode
  */
 function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
-  // String.prototype.repeat() is not used below for IE compatibility
-
   // skip ommited node types
-  // Array.prototype.includes() is not used below for IE compatibility
-  if (OMMITED_NODE_TYPES.indexOf(xmlNode.tagName) === -1) {
+  if (!OMMITED_NODE_TYPES.includes(xmlNode.tagName)) {
     const nodeDisplayName = treeElementName(xmlNode);
     const newTreeNode = {
       'text': nodeDisplayName,
