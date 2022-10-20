@@ -7,13 +7,16 @@ Visit the [website](https://esa.github.io/mo.viewer.web/) to browse the services
 ## How to run and configure locally
 ### Prerequisites
 * Python
-* Git
 ### Steps
+
+The following steps assume use of standard linux tools, but same can be achieved in Windows.
 ```
-# Clone the git repository
-git clone https://github.com/esa/mo.viewer.web
+# Download and unpack the repository
+# Alternatively clone using: git clone https://github.com/esa/mo.viewer.web
+wget -O moviewer.zip https://github.com/esa/mo.viewer.web/archive/refs/heads/master.zip
+unzip moviewer.zip
 # Navigate to the cloned repo
-cd mo.viewer.web
+cd mo.viewer.web-master
 # Start a local HTTP server
 python -m http.server
 # Use your favourite browser to navigate to the page, e.g.
