@@ -107,8 +107,7 @@ iframe {
 	padding: 8px;
 	top: 10px;
 	right:0px;
-	z-index: 10;	
-	width:100%;
+	z-index: 10;
 	display: flex; 
 	justify-content: flex-end;
 }
