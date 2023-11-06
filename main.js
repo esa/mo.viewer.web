@@ -1,4 +1,7 @@
 /* eslint-disable guard-for-in */
+const URL_KEY_NODE = "u";
+const URL_KEY_BRANCH = "b";
+
 /**
  * Recursively generate a tree node structure from a given XML node
  * @param {*} xmlNode
@@ -97,9 +100,9 @@ function buildPdfNode(newTreeNode, nodeDisplayName, parentTreeNode) {
  */
 async function processXMLFile(filepath) {
   // console.info("loading " + filepath);
-  jQuery.ajaxSetup({async: true});
+  jQuery.ajaxSetup({ async: true });
 
-  return $.get(filepath, function(d) {
+  return $.get(filepath, function (d) {
     parseMoNode(d.documentElement);
   }, 'xml');
 }
@@ -109,14 +112,15 @@ async function processXMLFile(filepath) {
  * @return {Array<Promise>} Array of promises allowing to track the laod status
  */
 function loadMoSpecs() {
-  if (document.cookie == null || document.cookie == '' ||
-    configServiceDefFiles[document.cookie] === undefined) {
-    document.cookie = configDefaultBranch;
-    $('#branchSelect').val(document.cookie);
+  var branch = getUrlParameter(URL_KEY_BRANCH);
+  if (branch == null || branch == '' ||
+    configServiceDefFiles[branch] === undefined) {
+    branch = configDefaultBranch;
+    $('#branchSelect').val(branch);
   }
   const promises = [];
-  for (const key in configServiceDefFiles[document.cookie]) {
-    promises.push(processXMLFile(configServiceDefFiles[document.cookie][key]));
+  for (const key in configServiceDefFiles[branch]) {
+    promises.push(processXMLFile(configServiceDefFiles[branch][key]));
   }
   return promises;
 }
@@ -125,7 +129,7 @@ function loadMoSpecs() {
  * Selects the node provided in the URL
  */
 function selectNodeFromURL() {
-  const nodePath = getUrlParameter('u');
+  const nodePath = getUrlParameter(URL_KEY_NODE);
   if (typeof nodePath !== 'undefined') {
     selectNodeFromPath(nodePath);
   }
@@ -176,17 +180,22 @@ function onSelectHandler(event, data) {
  * @param {*} event
  */
 function onBranchChanged(event) {
-  console.log('val', $('#branchSelect').val());
-  document.cookie = $('#branchSelect').val();
-  location.reload();
+  var newBranch = $('#branchSelect').val();
+  var oldBranch = getUrlParameter(URL_KEY_BRANCH);
+  var curNode = getUrlParameter(URL_KEY_NODE)
+  if (typeof oldBranch !== "undefined" && oldBranch !== newBranch) {
+    history.pushState({}, "",
+      encodeUrlParameters({ [URL_KEY_NODE]: curNode, [URL_KEY_BRANCH]: newBranch }));
+    location.reload();
+  }
 }
 
-window.onload = function() {
+window.onload = function () {
   for (const branchName in configServiceDefFiles) {
     $('#branchSelect').append(new Option(branchName, branchName));
   }
   // branch select
-  $('#branchSelect').val(document.cookie);
+  $('#branchSelect').val(getUrlParameter(URL_KEY_BRANCH));
   $('#branchSelect').change(onBranchChanged);
 
   divMain = document.getElementById('div_main');
@@ -220,15 +229,45 @@ function specLoadedCallback() {
     'plugins': ['search'],
   });
 
-  $('#searchbox').on('input', function(e) {
+  $('#searchbox').on('input', function (e) {
     $('#div_tree').jstree(true).search($('#searchbox').val());
   });
 
   selectNodeFromURL();
 }
 
-$(window).on('popstate', function(e) {
+$(window).on('popstate', function (e) {
   selectNodeFromURL();
 });
+
+function onNodeSelect(tree_node) {
+  var xml_node = tree_node.data.xml_node;
+  div_main.innerHTML = "";
+
+  // this variable will contain a list of function to be executed after the
+  // drawer_func has been called
+  post_draw = [];
+
+  var drawer_func = drawers[xml_node.tagName];
+  if (typeof drawer_func == 'undefined')
+    drawer_func = drawers["default"];
+
+  var nodePath = getUrlParameter(URL_KEY_NODE);
+  var curBranch = getUrlParameter(URL_KEY_BRANCH);
+  if (typeof nodePath !== "undefined" && nodePath !== tree_node.data.path) {
+    history.pushState({}, "",
+      encodeUrlParameters({ [URL_KEY_NODE]: tree_node.data.path, [URL_KEY_BRANCH]: curBranch }));
+  }
+  document.title = tree_node.data.path + " - MO Web Viewer";
+
+  drawer_func(xml_node);
+  draw_errors(xml_node);
+  draw_documentation(xml_node);
+  draw_comments(xml_node);
+
+  for (p in post_draw) {
+    post_draw[p]();
+  }
+}
 
 

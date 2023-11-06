@@ -408,31 +408,20 @@ function getUrlParameter(name) {
 	return urlSearch.get(name);
 };
 
-function onNodeSelect(tree_node) {
-	var xml_node = tree_node.data.xml_node
-	div_main.innerHTML = ""
-
-	// this variable will contain a list of function to be executed after the
-	// drawer_func has been called
-	post_draw = []
-
-	var drawer_func = drawers[xml_node.tagName]
-	if (typeof drawer_func == 'undefined')
-		drawer_func = drawers["default"]
-
-	var nodePath = getUrlParameter("u");
-	if (typeof nodePath !== "undefined" && nodePath !== tree_node.data.path) {
-		var stateObj = {};
-		history.pushState(stateObj, tree_node.data.path, "?u=" + tree_node.data.path);
+function encodeUrlParameters(params) {
+	var first = true;
+	ret = "";
+	for (var key in params) {
+		if (params[key] == undefined || params[key] == null) {
+			continue;
+		}
+		if (first) {
+			ret += "?";
+			first = false;
+		} else {
+			ret += "&";
+		}
+		ret += key + "=" + encodeURIComponent(params[key]);
 	}
-	document.title = tree_node.data.path + " - MO Web Viewer";
-
-	drawer_func(xml_node);
-	draw_errors(xml_node);
-	draw_documentation(xml_node);
-	draw_comments(xml_node);
-
-	for (p in post_draw) {
-		post_draw[p]()
-	}
+	return ret;
 }
