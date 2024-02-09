@@ -50,6 +50,16 @@ configServiceDefFiles.mpss_draft = [
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area051-v001-Mission-Data-Product.xml',
 ];
 
+/* MPDS review */
+configServiceDefFiles.mpds = [
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area006-v001-Mission-Product-Distribution.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area009-v001-Mission-Data-Product-Distribution.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area051-v001-Mission-Data-Product.xml',
+];
+
+
 var configServiceBookFiles = {
   'MAL': {pdfFilePath: 'pdf/ServiceDefMAL.xml-521x0b2e1.pdf', name: '521x0b2e1', icon: 'book'},
   'COM': {pdfFilePath: 'pdf/ServiceDefCOM.xml-521x1b1.pdf', name: '521x1b1', icon: 'book'},
