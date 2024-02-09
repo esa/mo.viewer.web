@@ -2,6 +2,7 @@
 const URL_KEY_NODE = "u";
 const URL_KEY_BRANCH = "b";
 
+const treeCompareFunction = (a, b) => a.text.localeCompare(b.text);
 /**
  * Recursively generate a tree node structure from a given XML node
  * @param {*} xmlNode
@@ -27,6 +28,7 @@ function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
     if (parentTreeNode == null) {
       console.debug('Adding Area: ' + newTreeNode.text);
       tree.data.push(newTreeNode);
+      tree.data.sort(treeCompareFunction);
 
       if (navigator.appName == 'Microsoft Internet Explorer' || !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== 'undefined' && $.browser.msie == 1)) {
         // IE is not supported
