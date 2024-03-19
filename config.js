@@ -12,7 +12,7 @@ var configDefaultBranch = 'release_8';
 */
 /* Release 8 (the latest) */
 configServiceDefFiles.release_8 = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area001-v001-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area001-v002-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area004-v001-Monitor-and-Control.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area003-v001-Common.xml',
@@ -20,7 +20,7 @@ configServiceDefFiles.release_8 = [
 
 /* Prototypes (in the master branch) */
 configServiceDefFiles.prototypes = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v002-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v001-Monitor-and-Control.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area003-v001-Common.xml',
@@ -41,7 +41,7 @@ configServiceDefFiles.nmf_dev = [
 
 /* MPSS Draft */
 configServiceDefFiles.mpss_draft = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v002-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v001-Monitor-and-Control.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/mpss-draft/xml-ccsds-mo-prototypes/src/main/resources/xml/area003-v001-Common.xml',
@@ -52,7 +52,7 @@ configServiceDefFiles.mpss_draft = [
 
 /* MPDS review */
 configServiceDefFiles.mpds = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v001-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v003-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area006-v001-Mission-Product-Distribution.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area009-v001-Mission-Data-Product-Distribution.xml',
