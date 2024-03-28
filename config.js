@@ -12,7 +12,7 @@ var configDefaultBranch = 'release_8';
 */
 /* Release 8 (the latest) */
 configServiceDefFiles.release_8 = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area001-v002-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-standards/src/main/resources/xml/area001-v002-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area004-v001-Monitor-and-Control.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area003-v001-Common.xml',
@@ -59,6 +59,12 @@ configServiceDefFiles.mpds = [
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area051-v001-Mission-Data-Product.xml',
 ];
 
+/* SWEPDC ref */
+configServiceDefFiles.swepdc = [
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v003-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v002-Monitor-and-Control.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area006-v001-Mission-Product-Distribution.xml',
+];
 
 var configServiceBookFiles = {
   'MAL': {pdfFilePath: 'pdf/ServiceDefMAL.xml-521x0b2e1.pdf', name: '521x0b2e1', icon: 'book'},
