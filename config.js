@@ -12,7 +12,7 @@ var configDefaultBranch = 'release_8';
 */
 /* Release 8 (the latest) */
 configServiceDefFiles.release_8 = [
-  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-standards/src/main/resources/xml/area001-v002-MAL.xml',
+  'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/master/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v002-MAL.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area002-v001-COM.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area004-v001-Monitor-and-Control.xml',
   'https://raw.githubusercontent.com/ccsdsmo/xml-service-specifications/release-8/xml-ccsds-mo-standards/src/main/resources/xml/area003-v001-Common.xml',
