@@ -20,10 +20,10 @@ configServiceDefFiles.release_8 = [
 
 /* Prototypes  / ongoing development */
 configServiceDefFiles.prototypes = [
-  'https://raw.githubusercontent.com/esa/mo-services-java/v10.1/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v003-MAL.xml',
-  'https://raw.githubusercontent.com/esa/mo-services-java/v10.1/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v002-Monitor-and-Control.xml',
-  'https://raw.githubusercontent.com/esa/mo-services-java/v10.1/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area005-v001-Mission-Planning-and-Scheduling.xml',
-  'https://raw.githubusercontent.com/esa/mo-services-java/v10.1/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area009-v001-Mission-Product-Distribution.xml',
+  'https://raw.githubusercontent.com/esa/mo-services-java/master/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area001-v003-MAL.xml',
+  'https://raw.githubusercontent.com/esa/mo-services-java/master/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area004-v002-Monitor-and-Control.xml',
+  'https://raw.githubusercontent.com/esa/mo-services-java/master/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area005-v001-Mission-Planning-and-Scheduling.xml',
+  'https://raw.githubusercontent.com/esa/mo-services-java/master/xml-service-specifications/xml-ccsds-mo-prototypes/src/main/resources/xml/area009-v001-Mission-Product-Distribution.xml',
 ];
 
 /* NMF Development branch */
