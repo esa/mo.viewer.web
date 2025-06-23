@@ -9,7 +9,7 @@ const treeCompareFunction = (a, b) => a.text.localeCompare(b.text);
  * @param {*} treeLevel
  * @param {*} parentTreeNode
  */
-function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
+function parseMoNode(xmlNode, filePath = "", treeLevel = 0, parentTreeNode = null) {
   // skip ommited node types
   if (!OMMITED_NODE_TYPES.includes(xmlNode.tagName)) {
     const nodeDisplayName = treeElementName(xmlNode);
@@ -34,7 +34,12 @@ function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
         // IE is not supported
       } else {
         // if the book is available as a PDF file
-        buildPdfNode(newTreeNode, nodeDisplayName, parentTreeNode);
+        pdfTreeNode = buildPdfNode(newTreeNode, 'PDF');
+        if (pdfTreeNode != null) {
+          tree.nodePathMap[pdfTreeNode.data.path] = pdfTreeNode;
+        }
+        xmlTreeNode = buildXmlNode(newTreeNode, parentTreeNode, filePath);
+        tree.nodePathMap[xmlTreeNode.data.path] = xmlTreeNode;
       }
     } else {
       parentTreeNode.children.push(newTreeNode);
@@ -61,7 +66,7 @@ function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
       }
       child.service = child.service || child.parentNode.service;
 
-      parseMoNode(child, treeLevel + 1, parentTreeNode);
+      parseMoNode(child, filePath, treeLevel + 1, parentTreeNode);
     }
   }
 }
@@ -72,40 +77,67 @@ function parseMoNode(xmlNode, treeLevel = 0, parentTreeNode = null) {
  * @param {*} nodeDisplayName
  * @param {*} parentTreeNode
  */
-function buildPdfNode(newTreeNode, nodeDisplayName, parentTreeNode) {
+function createTreeNode(nodeDisplayName, iconPath, id, path, xml_node) {
+  return {
+    'text': nodeDisplayName,
+    'children': [],
+    'icon': iconPath,
+    'id': id,
+    'data': {
+      'path': path,
+      'xml_node': xml_node,
+    },
+  };
+}
+
+function buildPdfNode(newTreeNode, nodeDisplayName) {
   if (configServiceBookFiles[newTreeNode.text]) {
     // then create a book entry
     const pdf = configServiceBookFiles[newTreeNode.text];
     console.debug('Adding PDF: ' + newTreeNode.text);
-    const pdfTreeNode = {
-      'text': pdf.name,
-      'children': [],
-      'icon': iconPath(pdf.icon),
-      'id': newTreeNode.id + '_' + nodeDisplayName,
-      'data': {
-        'path': parentTreeNode == null ? nodeDisplayName : newTreeNode.data.path + '/' + nodeDisplayName,
-        // creates a fake XML node
-        'xml_node': {
-          tagName: 'book',
-          pdfInfo: pdf,
-        },
-      },
-    };
+    const pdfTreeNode = createTreeNode(
+      pdf.name,
+      iconPath(pdf.icon),
+      newTreeNode.id + '_' + nodeDisplayName,
+      newTreeNode.data.path + '/PDF',
+      {
+        tagName: 'book',
+        pdfInfo: pdf,
+      }
+    );
     newTreeNode.children.push(pdfTreeNode);
+    return pdfTreeNode;
   }
+  return null;
 }
 
+function buildXmlNode(newTreeNode, parentTreeNode, xmlPath) {
+  // then create a book entry
+  console.debug('Adding XML: ' + newTreeNode.text);
+  const xmlTreeNode = createTreeNode(
+    "XML File",
+    iconPath('application_edit'),
+    newTreeNode.id + '_xml',
+    newTreeNode.data.path + '/XML',
+    {
+      tagName: 'xml',
+      xmlPath: xmlPath
+    }
+  );
+  newTreeNode.children.push(xmlTreeNode);
+  return xmlTreeNode;
+}
 /**
  *
- * @param {*} filepath
+ * @param {*} filePath
  * @return {Promise} Promise allowing to track the retrieval status
  */
-async function processXMLFile(filepath) {
+async function processXMLFile(filePath) {
   // console.info("loading " + filepath);
   jQuery.ajaxSetup({ async: true });
 
-  return $.get(filepath, function (d) {
-    parseMoNode(d.documentElement);
+  return $.get(filePath, function (d) {
+    parseMoNode(d.documentElement, filePath);
   }, 'xml');
 }
 
@@ -263,9 +295,12 @@ function onNodeSelect(tree_node) {
   document.title = tree_node.data.path + " - MO Web Viewer";
 
   drawer_func(xml_node);
-  draw_errors(xml_node);
-  draw_documentation(xml_node);
-  draw_comments(xml_node);
+
+  if (typeof xml_node.childrenByTag == 'function') {
+    draw_errors(xml_node);
+    draw_documentation(xml_node);
+    draw_comments(xml_node);
+  }
 
   for (p in post_draw) {
     post_draw[p]();

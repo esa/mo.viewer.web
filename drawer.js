@@ -638,10 +638,15 @@ function draw_comments(node, target_div) {
 function d_pdf(node, target_div) {
 	target_div = target_div || divMain
 
-	//	target_div.innerHTML = node.tagName
 	var pdframe = document.createElement("iframe");
 	pdframe.setAttribute("src", node.pdfInfo.pdfFilePath);
 	target_div.appendChild(pdframe);
+}
+
+function d_xml(node, target_div) {
+	if (!target_div) {
+		window.open(node.xmlPath, '_blank').focus();
+	}
 }
 
 drawers = {}
@@ -666,5 +671,6 @@ drawers["mal:composite"] = d_mal_composite
 drawers["com:objects"] = d_com_objects
 drawers["com:events"] = d_com_events
 
-
 drawers["book"] = d_pdf
+
+drawers["xml"] = d_xml
