@@ -252,7 +252,7 @@ function str_com_type(type, path_prefix) {
 	return str_type(type, path_prefix, "number")
 }
 
-function create_type_annotation(type_str, path_str, is_list) {
+function create_type_annotation(type_str, path_str, is_list, is_object_ref) {
 	var type_annotation = document.createElement("a")
 	type_annotation.setAttribute("id", "type_" + gen_suffix())
 	type_annotation.innerHTML = type_str
@@ -279,12 +279,15 @@ function create_type_annotation(type_str, path_str, is_list) {
 			//	t_ann.addClass("error")
 		}
 	})
-
-	if (is_list == "true") {
-		return "List&lt;" + type_annotation.outerHTML + "&gt; "
-	} else {
-		return type_annotation.outerHTML
+	ret = type_annotation.outerHTML;
+	if (is_object_ref == "true") {
+		ret = "ObjectRef&lt;" + ret + "&gt;"
 	}
+	if (is_list == "true") {
+		ret = "List&lt;" + ret + "&gt;"
+	}
+	
+	return ret;
 }
 
 /**
@@ -296,7 +299,7 @@ function create_type_annotation(type_str, path_str, is_list) {
  */
 function str_type(type, path_prefix, id_type) {
 	let { type_str, path_str } = decorateTypeNameAndPath(type, path_prefix, id_type);
-	return create_type_annotation(type_str, path_str, type.getAttribute("list"))
+	return create_type_annotation(type_str, path_str, type.getAttribute("list"), type.getAttribute("objectRef"))
 }
 
 function decorateTypeNameAndPath(type, path_prefix, id_type) {
